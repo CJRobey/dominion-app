@@ -1,0 +1,31 @@
+import random as rand
+import pandas as pd
+import numpy as np
+
+def main():
+    games = ['Dominion', 'Intrigue']
+    total_cards = 10
+    df = pd.read_csv('characters.csv')
+    nums = np.zeros(5)
+    nums[0] = rand.randint(0, 3)
+    if nums[0] == 0:
+        nums[1] = rand.randint(1, 3)
+    else:
+        nums[1] = rand.randint(0, 3)
+
+    while np.sum(nums) != total_cards:
+        nums[2] = rand.randint(2, 4)
+        nums[3] = rand.randint(2, 4)
+        nums[4] = rand.randint(0, 2)
+    nums = nums.astype(int)
+    final_characters = []*10
+    for i, num in enumerate(nums):
+        characters = np.array(df[df['Value'] == (i+2)]['Name'])
+        if num:
+            final_characters[np.sum(nums[:i]):np.sum(nums[:i])+int(num)] = characters[rand.sample(range(0, len(characters)), int(num))]
+    print(final_characters)
+    print(nums)
+
+
+if __name__ == '__main__':
+    main()
