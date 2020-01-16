@@ -27,21 +27,25 @@ Intrigue,6,Harem
 Intrigue,6,Nobles
 Dominion,2,Cellar
 Dominion,2,Chapel
-Dominion,2,Moat
+Dominion,2,Moat,reaction
 Dominion,3,Village
+Dominion,3,Harbinger
+Dominion,3,Vassal
 Dominion,3,Workshop
 Dominion,4,Bureaucrat
-Dominion,4,Gardens
-Dominion,4,Militia
+Dominion,4,Gardens,victory
+Dominion,4,Militia,attack
 Dominion,4,Moneylender
+Dominion,4,Poacher
 Dominion,4,Remodel
 Dominion,4,Smithy
 Dominion,4,Throne Room
+Dominion,5,Bandit,attack
 Dominion,5,Council Room
 Dominion,5,Festival
 Dominion,5,Laboratory
 Dominion,5,Library
 Dominion,5,Market
 Dominion,5,Mine
-Dominion,5,Witch
+Dominion,5,Witch,attack
 Dominion,6,Artisan
