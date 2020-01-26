@@ -1,0 +1,45 @@
+[build-system]
+requires = ["briefcase"]
+
+[tool.briefcase]
+project_name = "Dominion App"
+bundle = "com.example"
+version = "0.0.1"
+url = "https://example.com/dominionapp"
+license = "Proprietary"
+author = 'Caleb Robey'
+author_email = "calebrobey118@gmail.com"
+
+[tool.briefcase.app.dominionapp]
+formal_name = "Dominion App"
+description = "A smart dominion board game randomizer."
+icon = "src/dominionapp/resources/dominionapp"
+sources = ['src/dominionapp']
+requires = []
+
+
+[tool.briefcase.app.dominionapp.macOS]
+requires = [
+    'toga-cocoa>=0.3.0.dev18',
+]
+
+[tool.briefcase.app.dominionapp.linux]
+requires = [
+    'toga-gtk>=0.3.0.dev18',
+]
+
+[tool.briefcase.app.dominionapp.windows]
+requires = [
+    'toga-winforms>=0.3.0.dev18',
+]
+
+# Mobile deployments
+[tool.briefcase.app.dominionapp.iOS]
+requires = [
+    'toga-iOS>=0.3.0.dev18',
+]
+
+[tool.briefcase.app.dominionapp.android]
+requires = [
+    'toga-android>=0.3.0.dev18',
+]

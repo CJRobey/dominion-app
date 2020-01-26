@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: dominionapp
+Formal-Name: Dominion App
+App-ID: com.example.dominionapp
+Version: 0.0.1
+Home-page: https://example.com/dominionapp
+Author: Caleb Robey
+Author-email: calebrobey118@gmail.com
+Summary: A smart dominion board game randomizer.
