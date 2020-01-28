@@ -1,6 +1,7 @@
 import random as rand
 import pandas as pd
 import numpy as np
+import matplotlib.pyplot as plt
 
 def main():
     games = ['Dominion', 'Intrigue']
@@ -26,6 +27,11 @@ def main():
     print(final_characters)
     print(nums)
 
+    for i in range(1,11):
+        image = plt.imread('./beeware-app/dominionapp/src/dominionapp/resources/images/' + (final_characters[i-1].lower().replace(" ", "-") + ".jpg"))
+        plt.subplot(2,5,i); plt.imshow(image); plt.axis("off")
+
+    plt.show()
 
 if __name__ == '__main__':
     main()
