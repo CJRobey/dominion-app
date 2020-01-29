@@ -9,14 +9,17 @@ def main():
     df = pd.read_csv('characters.csv')
     nums = np.zeros(5)
     nums[0] = rand.randint(0, 3)
+    # this should be rare that we get 3 "2"s. Guess again, but at least 1
+    if nums[0] == 3:
+        nums[0] = rand.randint(1, 3)
     if nums[0] == 0:
         nums[1] = rand.randint(1, 3)
     else:
         nums[1] = rand.randint(0, 3)
 
     while np.sum(nums) != total_cards:
-        nums[2] = rand.randint(2, 4)
-        nums[3] = rand.randint(2, 4)
+        nums[2] = rand.randint(2, 5)
+        nums[3] = rand.randint(2, 5)
         nums[4] = rand.randint(0, 2)
     nums = nums.astype(int)
     final_characters = []*10
