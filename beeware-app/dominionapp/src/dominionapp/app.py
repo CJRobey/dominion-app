@@ -2,7 +2,7 @@
 A smart dominion board game randomizer.
 """
 import toga
-from toga.style.pack import CENTER, COLUMN
+from toga.style.pack import CENTER, COLUMN, RIGHT, LEFT
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
 from numpy import zeros, array, sum
@@ -10,24 +10,25 @@ from random import randint, sample
 from pandas import read_csv
 from cv2 import imread
 
-box = toga.Box()
-
+box1 = toga.Box()
+box2 = toga.Box()
 
 class DominionApp(toga.App):
 
     def startup(self):
         self.main_window = toga.MainWindow(title=self.name)
 
-        box.style.padding = 40
-        box.style.update(alignment=CENTER)
-        box.style.update(direction=COLUMN)
+        for box in [box1, box2]:
+            box.style.padding = 40
+            box.style.update(alignment=LEFT)
+            box.style.update(direction=ROW)
         button1 = toga.Button('Choose Game', on_press=self.decide_game)
-        box.add(button1)
+        box1.add(button1)
         # image from local path
         # load brutus.png from the package
         # We set the style width/height parameters for this one
 
-        self.main_window.content = box
+        self.main_window.content = box1
         self.main_window.show()
 
     def decide_game(self, widget):
@@ -58,15 +59,17 @@ class DominionApp(toga.App):
         for i in range(1,11):
             image_from_path = toga.Image('./resources/images/' + (final_characters[i-1].lower().replace(" ", "-") + ".jpg"))
             imageview_from_path = toga.ImageView(image_from_path)
-            imageview_from_path.style.update(width=150)
-            imageview_from_path.style.update(height=240)
-            imageview_from_path.style.update(direction=ROW)
-            box.add(imageview_from_path)
+            imageview_from_path.style.update(width=150, height=240)
+            imageview_from_path.style.update(direction=ROW, alignment=LEFT, padding=24)
+            if (i < 6):
+                box1.add(imageview_from_path)
+            else:
+                box2.add(imageview_from_path)
 
         print(final_characters)
         print(nums)
-
-        self.main_window.content = box
+        box1.add(box2)
+        self.main_window.content = box1
         self.main_window.show()
 
 
