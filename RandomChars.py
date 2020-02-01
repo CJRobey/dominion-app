@@ -3,10 +3,29 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+def union(lst1, lst2):
+    print(set(lst1))
+    return list(set(lst1) | set(lst2))
+
 def main():
     games = ['Dominion', 'Intrigue']
     total_cards = 10
-    df = pd.read_csv('characters.csv')
+    # csv_file = 'characters.csv'
+    csv_file = 'cards.csv'
+    full_df = pd.read_csv(csv_file)
+
+    if (csv_file == 'cards.csv'):
+        action_bools = (full_df['Action'] == float(1))
+        df = full_df[action_bools]
+        bools = [[],[]]
+        for i,game in enumerate(games):
+            bools[i] = (df['Expansion'] == game)
+        final_bools = np.array(bools[0]) | np.array(bools[1])
+
+        # final_bools = [(bools[0][i] or bools[1][i]) for i in range(len(bools[0]))]
+
+        df = df[final_bools]
+
     nums = np.zeros(5)
     nums[0] = rand.randint(0, 3)
     # this should be rare that we get 3 "2"s. Guess again, but at least 1
@@ -21,12 +40,22 @@ def main():
         nums[2] = rand.randint(2, 5)
         nums[3] = rand.randint(2, 5)
         nums[4] = rand.randint(0, 2)
+        if nums[4] == 2:
+            nums[4] = rand.randint(0, 2)
+
     nums = nums.astype(int)
     final_characters = []*10
     for i, num in enumerate(nums):
-        characters = np.array(df[df['Value'] == (i+2)]['Name'])
+        if csv_file == 'cards.csv':
+            char_bools = (df['Cost'] == float(i+2))
+            characters = np.array(df[char_bools]['Name'])
+        else:
+            characters = np.array(df[df['Cost'] == (i+2)]['Name'])
         if num:
-            final_characters[np.sum(nums[:i]):np.sum(nums[:i])+int(num)] = characters[rand.sample(range(0, len(characters)), int(num))]
+            sample = rand.sample(range(0, len(characters)), int(num))
+            rng_min = np.sum(nums[:i])
+            rng_max = np.sum(nums[:i])+int(num)
+            final_characters[rng_min:rng_max] = characters[sample]
     print(final_characters)
     print(nums)
 
@@ -34,7 +63,7 @@ def main():
         image = plt.imread('./beeware-app/dominionapp/src/dominionapp/resources/images/' + (final_characters[i-1].lower().replace(" ", "-") + ".jpg"))
         plt.subplot(2,5,i); plt.imshow(image); plt.axis("off")
 
-    plt.show()
+    plt.savefig('final_plot')
 
 if __name__ == '__main__':
     main()
