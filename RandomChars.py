@@ -3,10 +3,6 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-def union(lst1, lst2):
-    print(set(lst1))
-    return list(set(lst1) | set(lst2))
-
 def main():
     games = ['Dominion', 'Intrigue']
     total_cards = 10
@@ -63,7 +59,8 @@ def main():
         image = plt.imread('./beeware-app/dominionapp/src/dominionapp/resources/images/' + (final_characters[i-1].lower().replace(" ", "-") + ".jpg"))
         plt.subplot(2,5,i); plt.imshow(image); plt.axis("off")
 
-    plt.savefig('final_plot')
+    #plt.savefig('final_plot')
+    plt.show()
 
 if __name__ == '__main__':
     main()
