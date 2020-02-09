@@ -34,7 +34,18 @@ class DominionApp(toga.App):
     def decide_game(self, widget):
         games = ['Dominion', 'Intrigue']
         total_cards = 10
-        df = read_csv('app/dominionapp/resources/characters.csv')
+        csv_file = 'cards.csv'
+        full_df = read_csv('app/dominionapp/resources/'+csv_file)
+
+        if csv_file == 'cards.csv':
+            action_bools = (full_df['Action'] == float(1))
+            df = full_df[action_bools]
+            bools = [[], []]
+            for i, game in enumerate(games):
+                bools[i] = (df['Expansion'] == game)
+            final_bools = array(bools[0]) | array(bools[1])
+            df = df[final_bools]
+
         nums = zeros(5)
         nums[0] = randint(0, 3)
         # this should be rare that we get 3 "2"s. Guess again, but at least 1
@@ -49,13 +60,23 @@ class DominionApp(toga.App):
             nums[2] = randint(2, 5)
             nums[3] = randint(2, 5)
             nums[4] = randint(0, 2)
+            if nums[4] == 2:
+                nums[4] = randint(0, 2)
+
         nums = nums.astype(int)
-        final_characters = [None] * 10
+        final_characters = [] * total_cards
         for i, num in enumerate(nums):
-            characters = array(df[df['Cost'] == (i + 2)]['Name'])
+            if csv_file == 'cards.csv':
+                char_bools = (df['Cost'] == float(i + 2))
+                characters = array(df[char_bools]['Name'])
+            else:
+                characters = array(df[df['Cost'] == (i + 2)]['Name'])
             if num:
-                final_characters[sum(nums[:i]):sum(nums[:i]) + int(num)] = characters[sample(range(0, len(characters)), int(num))]
-        print(final_characters)
+                char_sample = sample(range(0, len(characters)), int(num))
+                rng_min = sum(nums[:i])
+                rng_max = sum(nums[:i]) + int(num)
+                final_characters[rng_min:rng_max] = characters[char_sample]
+
         picture_box = toga.Box(style=Pack(direction=COLUMN))
         for i in range(1,11):
             image_from_path = toga.Image('./resources/images/' + (final_characters[i-1].lower().replace(" ", "-") + ".jpg"))
