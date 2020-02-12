@@ -5,7 +5,7 @@ import toga
 from toga.style.pack import CENTER, COLUMN, RIGHT, LEFT
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
-from numpy import zeros, array, sum
+import tinynumpy as np
 from random import randint, sample
 from pandas import read_csv
 import os
@@ -35,7 +35,7 @@ class DominionApp(toga.App):
         games = ['Dominion', 'Intrigue']
         total_cards = 10
         csv_file = 'cards.csv'
-        full_df = read_csv('app/dominionapp/resources/'+csv_file)
+        full_df = read_csv('src/dominionapp/resources/'+csv_file)
 
         if csv_file == 'cards.csv':
             action_bools = (full_df['Action'] == float(1))
@@ -43,10 +43,10 @@ class DominionApp(toga.App):
             bools = [[], []]
             for i, game in enumerate(games):
                 bools[i] = (df['Expansion'] == game)
-            final_bools = array(bools[0]) | array(bools[1])
+            final_bools = np.array(bools[0]) | np.array(bools[1])
             df = df[final_bools]
 
-        nums = zeros(5)
+        nums = []*5
         nums[0] = randint(0, 3)
         # this should be rare that we get 3 "2"s. Guess again, but at least 1
         if nums[0] == 3:
@@ -56,7 +56,7 @@ class DominionApp(toga.App):
         else:
             nums[1] = randint(0, 3)
 
-        while sum(nums) != total_cards:
+        while np.sum(nums) != total_cards:
             nums[2] = randint(2, 5)
             nums[3] = randint(2, 5)
             nums[4] = randint(0, 2)
@@ -68,9 +68,9 @@ class DominionApp(toga.App):
         for i, num in enumerate(nums):
             if csv_file == 'cards.csv':
                 char_bools = (df['Cost'] == float(i + 2))
-                characters = array(df[char_bools]['Name'])
+                characters = np.array(df[char_bools]['Name'])
             else:
-                characters = array(df[df['Cost'] == (i + 2)]['Name'])
+                characters = np.array(df[df['Cost'] == (i + 2)]['Name'])
             if num:
                 char_sample = sample(range(0, len(characters)), int(num))
                 rng_min = sum(nums[:i])
