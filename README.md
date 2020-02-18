@@ -11,3 +11,11 @@ A tool for choosing good games of dominion
 
 ## State of the Project
 Currently, you may download this project and turn it into a perfectly fine MacOS application. But it seems that Toga/BeeWare does not support "clickable" buttons in iOS. I would love to be proven wrong. Please supply a pull request.
+
+## Steps to use
+1. Clone the repo
+2. cd dominion-app
+3a. If you would like to just run with Python, use the command "python3 RandomChars.py" (you may need to "pip install matplotlib").
+3b. cd beeware-app
+4. source beeware-venv/bin/activate
+5. briefcase run (this should install and build on your system)
