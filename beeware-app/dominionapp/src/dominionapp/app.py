@@ -38,7 +38,7 @@ class DominionApp(toga.App):
         csv_file = 'cards.csv'
         full_df = [[] for sub in range(max_cost + 1)]
         key_dict = {}
-        csvfile = csv.DictReader(open('app/dominionapp/resources/' + csv_file))
+        csvfile = csv.DictReader(open('src/dominionapp/resources/' + csv_file))
         for row in csvfile:
             for game in games:
                 if row['Expansion'] == game:
