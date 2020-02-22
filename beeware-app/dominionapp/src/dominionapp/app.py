@@ -2,6 +2,7 @@
 A smart dominion board game randomizer.
 """
 import toga
+import asyncio
 from toga.style.pack import CENTER, COLUMN, RIGHT, LEFT
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW
