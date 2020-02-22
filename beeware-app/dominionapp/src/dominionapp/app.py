@@ -17,6 +17,7 @@ class DominionApp(toga.App):
         self.outer_box.style.padding = 40
         self.outer_box.style.update(direction=COLUMN)
         self.button = toga.Button('Choose Game', on_press=self.decide_game, style=Pack(alignment=CENTER, padding=40))
+        self.button.enabled = True;
         self.outer_box.add(self.button)
         box = toga.Box(style=Pack(padding=40,alignment=CENTER, direction=COLUMN))
         # initializing the space
@@ -29,7 +30,7 @@ class DominionApp(toga.App):
         self.main_window.show()
 
 
-    def decide_game(self, widget):
+    async def decide_game(self, widget):
         # widget.label = 'pressed'
         games = ['Dominion', 'Intrigue']
         total_cards = 10
@@ -86,6 +87,7 @@ class DominionApp(toga.App):
         else:
            self.outer_box.add(picture_box)
         self.scroller.content = self.outer_box
+        widget.enabled = True;
         self.main_window.content = self.scroller
 
 
