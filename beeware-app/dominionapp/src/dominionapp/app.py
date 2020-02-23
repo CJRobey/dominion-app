@@ -13,7 +13,7 @@ from random import randint, sample
 class DominionApp(toga.App):
 
     def startup(self):
-        self.main_window = toga.MainWindow(title=self.name, size=(250, (240*10)+(40*20)))
+        self.main_window = toga.MainWindow(title=self.name) #, size=(250, (240*10)+(40*20)))
         self.outer_box = toga.Box()
         self.outer_box.style.padding = 40
         self.outer_box.style.update(direction=COLUMN)
@@ -32,14 +32,17 @@ class DominionApp(toga.App):
 
 
     async def decide_game(self, widget):
-        # widget.label = 'pressed'
         games = ['Dominion', 'Intrigue']
         total_cards = 10
         max_cost = 6
         csv_file = 'cards.csv'
         full_df = [[] for sub in range(max_cost + 1)]
+<<<<<<< Updated upstream
         key_dict = {}
         csvfile = csv.DictReader(open('src/dominionapp/resources/' + csv_file))
+=======
+        csvfile = csv.DictReader(open('app/dominionapp/resources/' + csv_file))
+>>>>>>> Stashed changes
         for row in csvfile:
             for game in games:
                 if row['Expansion'] == game:
@@ -88,7 +91,6 @@ class DominionApp(toga.App):
         else:
            self.outer_box.add(picture_box)
         self.scroller.content = self.outer_box
-        widget.enabled = True;
         self.main_window.content = self.scroller
 
 
