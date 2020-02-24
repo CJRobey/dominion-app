@@ -13,39 +13,61 @@ from random import randint, sample
 class DominionApp(toga.App):
 
     def startup(self):
-        self.main_window = toga.MainWindow(title=self.name) #, size=(250, (240*10)+(40*20)))
+        self.main_window = toga.MainWindow(title=self.name) #, ))
         self.outer_box = toga.Box()
-        self.outer_box.style.padding = 40
         self.outer_box.style.update(direction=COLUMN)
-        self.button = toga.Button('Choose Game', on_press=self.decide_game, style=Pack(alignment=CENTER, padding=40))
-        self.button.enabled = True;
-        self.outer_box.add(self.button)
-        box = toga.Box(style=Pack(padding=40,alignment=CENTER, direction=COLUMN))
+
+        self.choose_button = toga.Button('Choose Game', on_press=self.decide_game, style=Pack(alignment=CENTER, padding=40))
+        self.outer_box.add(self.choose_button)
         # initializing the space
-        self.outer_box.add(box)
         self.scroller = toga.ScrollContainer(content=self.outer_box)
-        #self.scroller.content = self.outer_box
+        self.init_games()
+        self.split = toga.SplitContainer()
+        self.split.content = [self.scroller, self.game_dashboard]
+
         # image from local path
         # We set the style width/height parameters for this one
-        self.main_window.content = self.scroller
+        self.main_window.content = self.split
         self.main_window.show()
+
+    def init_games(self):
+        self.games = []
+        csv_file = 'cards.csv'
+        self.csvfile = csv.DictReader(open('src/dominionapp/resources/' + csv_file))
+        dominion_button = toga.Button('Dominion', on_press=self.buttonCallback, style=Pack(alignment=CENTER, padding=10))
+        intrigue_button = toga.Button('Intrigue', on_press=self.buttonCallback, style=Pack(alignment=CENTER, padding=10))
+        alchemy_button = toga.Button('Alchemy', on_press=self.buttonCallback, style=Pack(alignment=CENTER, padding=10))
+        self.game_dashboard = toga.Box(style=Pack(direction=COLUMN, alignment=RIGHT),
+                                  children=[dominion_button,
+                                            intrigue_button,
+                                            alchemy_button])
+
+
+
+    def buttonCallback(self, widget):
+        if widget.label[0] != '+':
+            self.games += [widget.label]
+            widget.label = '+ ' + widget.label
+        else:
+            self.games.remove(widget.label[2:])
+            widget.label = widget.label[2:]
+        print(self.games)
 
 
     async def decide_game(self, widget):
-        games = ['Dominion', 'Intrigue']
-        total_cards = 10
+
         max_cost = 6
-        csv_file = 'cards.csv'
         full_df = [[] for sub in range(max_cost + 1)]
-<<<<<<< Updated upstream
-        key_dict = {}
-        csvfile = csv.DictReader(open('src/dominionapp/resources/' + csv_file))
-=======
-        csvfile = csv.DictReader(open('app/dominionapp/resources/' + csv_file))
->>>>>>> Stashed changes
-        for row in csvfile:
-            for game in games:
+        total_cards = 10
+        csv_file = 'cards.csv'
+        self.csvfile = csv.DictReader(open('src/dominionapp/resources/' + csv_file))
+
+        for row in self.csvfile:
+            for game in self.games:
                 if row['Expansion'] == game:
+                    print(row['Cost'], row['Name'])
+                    if row['Cost'] == '':
+                        row['Cost'] = 0
                     cost = int(row['Cost'])
                     if bool(row['Action']) or (bool(row['Treasure']) and bool(row['Victory'])):
                         full_df[cost] += [row]
@@ -71,13 +93,14 @@ class DominionApp(toga.App):
         counter = 0;
         for i, num in enumerate(nums):
             characters = full_df[i + 2]
+            # print(len(characters), int(num))
+
             if num:
                 char_sample = sample(range(0, len(characters)), int(num))
-
                 for s in char_sample:
                     final_characters[counter] = characters[s]
                     counter += 1
-        print(final_characters)
+        # print(final_characters)
 
         picture_box = toga.Box(style=Pack(direction=COLUMN))
         for i in range(1,11):
@@ -86,12 +109,12 @@ class DominionApp(toga.App):
                                                                              padding=40, width=150, height=240))
             picture_box.add(imageview_from_path)
 
-        if len(self.outer_box.children) > 1:
-           self.outer_box.children[1] = picture_box
+        if (len(self.outer_box.children) > 1):
+            self.outer_box.children[1] = picture_box
         else:
-           self.outer_box.add(picture_box)
+            self.outer_box.add(picture_box)
+
         self.scroller.content = self.outer_box
-        self.main_window.content = self.scroller
 
 
 def main():
