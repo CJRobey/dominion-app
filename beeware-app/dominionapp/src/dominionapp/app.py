@@ -13,15 +13,16 @@ from random import randint, sample
 class DominionApp(toga.App):
 
     def startup(self):
-        self.main_window = toga.MainWindow(title=self.name) #, ))
+        self.main_window = toga.MainWindow(title=self.name)
         self.outer_box = toga.Box()
         self.outer_box.style.update(direction=COLUMN)
 
         self.choose_button = toga.Button('Choose Game', on_press=self.decide_game, style=Pack(alignment=CENTER, padding=40))
         self.outer_box.add(self.choose_button)
+
         # initializing the space
         self.scroller = toga.ScrollContainer(content=self.outer_box)
-        self.init_games()
+        self.init_menu()
         self.split = toga.SplitContainer()
         self.split.content = [self.scroller, self.game_dashboard]
 
@@ -30,21 +31,20 @@ class DominionApp(toga.App):
         self.main_window.content = self.split
         self.main_window.show()
 
-    def init_games(self):
+    def init_menu(self):
         self.games = []
         csv_file = 'cards.csv'
         self.csvfile = csv.DictReader(open('src/dominionapp/resources/' + csv_file))
-        dominion_button = toga.Button('Dominion', on_press=self.buttonCallback, style=Pack(alignment=CENTER, padding=10))
-        intrigue_button = toga.Button('Intrigue', on_press=self.buttonCallback, style=Pack(alignment=CENTER, padding=10))
-        alchemy_button = toga.Button('Alchemy', on_press=self.buttonCallback, style=Pack(alignment=CENTER, padding=10))
-        self.game_dashboard = toga.Box(style=Pack(direction=COLUMN, alignment=RIGHT),
-                                  children=[dominion_button,
-                                            intrigue_button,
-                                            alchemy_button])
+        expansion_buttons = []
+        self.game_dashboard = toga.Box(style=Pack(direction=COLUMN, alignment=RIGHT))
+        self.game_dashboard.add(toga.Label('Expansions to Use', style=Pack(text_align=CENTER, padding=10)))
+        for row in self.csvfile:
+            if row['Expansion'] not in expansion_buttons:
+                button = toga.Button(row['Expansion'], on_press=self.button_callback, style=Pack(alignment=CENTER, padding=5))
+                expansion_buttons.append(row['Expansion'])
+                self.game_dashboard.add(button)
 
-
-
-    def buttonCallback(self, widget):
+    def button_callback(self, widget):
         if widget.label[0] != '+':
             self.games += [widget.label]
             widget.label = '+ ' + widget.label
@@ -53,8 +53,7 @@ class DominionApp(toga.App):
             widget.label = widget.label[2:]
         print(self.games)
 
-
-    async def decide_game(self, widget):
+    def decide_game(self, widget):
         max_cost = 6
         full_df = [[] for sub in range(max_cost + 1)]
         total_cards = 10
@@ -114,11 +113,6 @@ class DominionApp(toga.App):
             self.outer_box.add(picture_box)
 
         self.scroller.content = self.outer_box
-<<<<<<< HEAD
-        widget.enabled = True;
-        self.main_window.content = self.scroller
-=======
->>>>>>> 58ffb0e... added some expansion buttons
 
 
 def main():
