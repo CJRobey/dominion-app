@@ -34,7 +34,7 @@ class DominionApp(toga.App):
     def init_menu(self):
         self.games = []
         csv_file = 'cards.csv'
-        self.csvfile = csv.DictReader(open('src/dominionapp/resources/' + csv_file))
+        self.csvfile = csv.DictReader(open('app/dominionapp/resources/' + csv_file))
         expansion_buttons = []
         self.game_dashboard = toga.Box(style=Pack(direction=COLUMN, alignment=RIGHT))
         self.game_dashboard.add(toga.Label('Expansions to Use', style=Pack(text_align=CENTER, padding=10)))
@@ -58,7 +58,7 @@ class DominionApp(toga.App):
         full_df = [[] for sub in range(max_cost + 1)]
         total_cards = 10
         csv_file = 'cards.csv'
-        self.csvfile = csv.DictReader(open('src/dominionapp/resources/' + csv_file))
+        self.csvfile = csv.DictReader(open('app/dominionapp/resources/' + csv_file))
 
         for row in self.csvfile:
             for game in self.games:
