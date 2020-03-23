@@ -68,7 +68,6 @@ class DominionApp(toga.App):
         for row in self.csvfile:
             for game in self.games:
                 if row['Expansion'] == game:
-                    # print(row['Cost'], row['Name'])
                     if row['Cost'] == '':
                         row['Cost'] = 0
                     cost = int(row['Cost'])
@@ -133,9 +132,10 @@ class DominionApp(toga.App):
     async def decide_balanced_game(self, widget):
         attack_count = 0
         react_count = 0
-        while (attack_count + react_count) < 3 and (attack_count == 0 or react_count == 0):
+        while ((attack_count + react_count) < 3) or ((attack_count == 0) or (react_count == 0)):
             attack_count = 0
             react_count = 0
+            final_characters = []
             final_characters = self.grab_cards()
             for char in final_characters:
                 if char['Attack']:
